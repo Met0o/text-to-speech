@@ -8,7 +8,7 @@ from TTS.tts.utils.text.tokenizer import TTSTokenizer
 from TTS.tts.configs.glow_tts_config import GlowTTSConfig
 from TTS.tts.configs.shared_configs import CharactersConfig
 from TTS.tts.configs.shared_configs import BaseDatasetConfig
-from TTS.tts.datasets.formatters import custom_bulgarian_formatter
+from formatters import custom_bulgarian_formatter
 
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 

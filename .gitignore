@@ -3,3 +3,4 @@
 *.wav
 *.pth
 train_dir/
+__pycache__/
