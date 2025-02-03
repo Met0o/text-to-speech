@@ -4,22 +4,23 @@ This project is designed to establish a pipeline for data gathering, data proces
 
 The main goal is to create a Bulgarian TTS model based on the [GlowTTS](https://coqui-tts.readthedocs.io/en/latest/models/glow_tts.html) architecture. 
 
-Data gathering depends on the availability of a large corpus of Bulgarian text which is obtained through web scraping the open-source website [chitanka](https://chitanka.info/text/random.html)
+Data gathering depends on the availability of a large corpus of Bulgarian text which is obtained through the open-source website [chitanka](https://chitanka.info/text/random.html)
 
-Data processing involves cleaning, formatting and extracting sentences, creating a unified corpus of 34712 sentences with a corresponding metadata file.
+Data processing involves cleaning, formatting and extracting sentences, creating a unified corpus of 25719 sentences with a corresponding metadata file.
 
 Since obtaining a large dataset of high-quality Bulgarian audio files is very difficult (if not impossible, excluding copyright data), the audio files are synthesized using the Azure Text-to-Speech API with `bg-BG-KalinaNeural` set as voice. I found this synthetic voice to be the most natural-sounding for Bulgarian text that currently exists.
 
 To avoid the need to resample the audio files after they are generated, the Azure API is configured to return the audio files in 22050kHz 16bit PCM mono format. This is done by setting the output format in the speech config object:
+
 ```python
 speech_config.set_speech_synthesis_output_format(speechsdk.SpeechSynthesisOutputFormat.Riff22050Hz16BitMonoPcm)
 ```
 
-Unfortunately OpenAI's SOTA TTS-1 & TTS-1-HD models struggle to produce natural-sounding Bulgarian voice. Besides their high cost does not justify the poor quality of the output.
+Alternative text-to-speech cloud services such as OpenAI's tts-1, tts-1-hd models, and [Google TTS](https://cloud.google.com/text-to-speech/docs/voices), struggle to produce natural-sounding Bulgarian voice.
 
-With this dataset, the total number of synthesized characters through the Azure's API was 2.87 million. I've used Azure's Free Trial tier worth of €190.00 starting credit and after generating the audio clips the total cost of the API usage accounted to €40.33. 
+With this dataset, the total number of synthesized characters through the Azure's API was 2.87 million. I've used Azure's Free Trial tier worth of €190.00 starting credit, and after generating the audio clips the total cost of the API usage accounted to €40.33. 
 
-There is also an option to use Azure's Free (F0) tier which allows for 0.5 million characters free per month, or Pay-as-You-Go tier which would cost €14.396 per 1million synthesized characters.
+There is also an option to use Azure's Free (F0) tier which allows for 0.5 million characters free per month, or Pay-as-You-Go tier which would cost €14.40 per 1 million synthesized characters.
 
 ## Project strucutre
 
@@ -28,16 +29,15 @@ project_root/
 ├── configs/.env
 ├── data/
 │   ├── sentences.txt
-│   ├── sentences2.txt
 ├── extracted_texts/
-│   ├── Kulturabg.txt
+│   ├── AI Generated.txt
 │   ├── ...
 ├── output_audio/
 │   ├── metadata.csv
 │   ├── Sentence1.wav
 │   ├── ...
 ├── processed_texts/
-│   ├── Kulturabg_clean.txt
+│   ├── sentences.txt
 │   ├── ...
 ├── train_dir/
 │   ├── run-February-03-2025_10+30AM-0000000/
