@@ -43,18 +43,16 @@ bulgarian_chars = "".join(bulgarian_list)
 config = GlowTTSConfig(
     batch_size=32,
     eval_batch_size=16,
-    num_loader_workers=20,
+    num_loader_workers=4,
     num_eval_loader_workers=4,
     run_eval=True,
     test_delay_epochs=-1,
-    epochs=945,
+    epochs=1000,
     print_step=25,
     print_eval=False,
     mixed_precision=True,
     output_path=output_path,
     datasets=[dataset_config],
-    save_step=500,
-    use_phonemes=False,
 )
 
 torch.cuda.empty_cache()

@@ -7,8 +7,10 @@ PROCESSED_DIR = "processed_texts"
 os.makedirs(PROCESSED_DIR, exist_ok=True)
 
 REMOVE_CHARS = r"[*—_„“\[\]…]"
-REMOVE_REFERENCES = r"(Бел\.пр\.|\b\d+\.)"
-MAX_SENTENCE_LENGTH = 170
+REMOVE_REFERENCES = r"(р\.|Б\.|т\.н\.|т\.e\.|Б\.а\.|Бел\.пр\.|\b\d+\.)"
+
+MAX_SENTENCE_LENGTH = 2000
+MAX_SENTENCE_CHARACTERS = 150
 
 # Function to break long sentences naturally at word boundaries, but avoid single-word orphan lines
 def split_long_sentence(sentence, max_length=MAX_SENTENCE_LENGTH):
@@ -34,24 +36,43 @@ def split_long_sentence(sentence, max_length=MAX_SENTENCE_LENGTH):
     return "\n".join(lines)
 
 def process_text(text):
+    # Remove unwanted characters
     text = re.sub(REMOVE_CHARS, "", text)
     # Remove references like "Бел.пр." and numbered items like "1.", "2."
     text = re.sub(REMOVE_REFERENCES, "", text)
+    # Remove "т. е." completely
+    text = re.sub(r"т\. ?е\.", "", text)
+    # Remove capital abbreviations such as "В. И." (matches two or more groups like 'А.' with optional spaces)
+    text = re.sub(r"\b(?:[А-Я]\.\s*){2,}", "", text)
+    
     # Fix misplaced new lines (remove excessive indentation)
     text = re.sub(r"\n\s+", " ", text)
+    # Remove all non-Bulgarian characters (keeps only Cyrillic, whitespace, and specified punctuation)
+    text = re.sub(r"[^\u0400-\u04FF\s.,!?]", "", text)
+    # Remove two and three empty space lines
+    text = re.sub(r"\s{2,3}", "", text)
+    # Ensure space after ".", "?", "!"
+    text = re.sub(r"([.!?])(?=[^\s])", r"\1 ", text)
     # Split into sentences using ".", "?", "!" while preserving them
-    # sentences = re.split(r'(?<=[.!?,])\s+', text) # includes commas for experiments
     sentences = re.split(r'(?<=[.!?])\s+', text)
     processed_sentences = []
     
     for sentence in sentences:
         sentence = sentence.strip()
+        # Remove any leading commas (or other stray punctuation) and spaces
+        sentence = re.sub(r"^[,\s]+", "", sentence)
         
-        # Split long sentences naturally
-        if len(sentence) > MAX_SENTENCE_LENGTH:
-            processed_sentences.append(split_long_sentence(sentence))
-        else:
-            processed_sentences.append(sentence)
+        # Skip sentences that are just punctuation symbols (one or more of .!?)
+        if re.fullmatch(r"[.!?]+", sentence):
+            continue
+        
+        # Drop sentences longer than MAX_SENTENCE_CHARACTERS
+        if len(sentence) <= MAX_SENTENCE_CHARACTERS:
+            # Split long sentences naturally
+            if len(sentence) > MAX_SENTENCE_LENGTH:
+                processed_sentences.append(split_long_sentence(sentence))
+            else:
+                processed_sentences.append(sentence)
 
     # Fix cases where single words like "Край." appear alone by merging them back
     processed_text = "\n".join(processed_sentences)

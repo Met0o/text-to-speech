@@ -36,12 +36,8 @@ project_root/
 ├── processed_texts/
 │   ├── Kulturabg_clean.txt
 │   ├── ...
-├── resampled_output_audio/
-│   ├── metadata.csv
-│   ├── Sentence1.wav
-│   ├── ...
 ├── train_dir/
-│   ├── run-January-29-2025_10+40AM-0000000/
+│   ├── run-February-03-2025_10+30AM-0000000/
 │   │   ├── config.json
 │   │   └── trainer_0_log.txt
 │   │   └── best_model.pth
