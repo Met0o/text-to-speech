@@ -1,18 +1,17 @@
 import os
-import csv
 import re
+import csv
 from dotenv import dotenv_values
 import azure.cognitiveservices.speech as speechsdk
 
-config = dotenv_values(".env")
+config = dotenv_values("configs/.env")
+speech_key = config["speech_key"]
+service_region = config["service_region"]
 
-# Azure Speech Configuration
-speech_key, service_region ="speech_key", "service_region"
 speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)
 speech_config.speech_synthesis_voice_name = 'bg-BG-KalinaNeural'
 
-# Input text file
-input_file = os.path.join('data', 'sentences2.txt')
+input_file = os.path.join('data', 'sentences.txt')
 try:
     with open(input_file, 'r', encoding='utf-8') as file:
         sentences = [line.strip() for line in file if line.strip()]
@@ -24,32 +23,33 @@ output_folder = "output_audio"
 os.makedirs(output_folder, exist_ok=True)
 metadata_file = os.path.join(output_folder, "metadata.csv")
 
-# Find the highest existing file index
+# Find the highest existing file index to avoid overwriting files.
 existing_files = [f for f in os.listdir(output_folder) if f.startswith("sentence") and f.endswith(".wav")]
 existing_indexes = [int(re.search(r"sentence(\d+)\.wav", f).group(1)) for f in existing_files if re.search(r"sentence(\d+)\.wav", f)]
 start_idx = max(existing_indexes) + 1 if existing_indexes else 1  # Start from next available index
 
-# Use append mode to prevent overwriting previous entries (in the event of re-runs)
-with open(metadata_file, "a", newline="", encoding="utf-8") as csvfile:
-    csv_writer = csv.writer(csvfile, delimiter="|")
+file_exists = os.path.exists(metadata_file)
 
-    for idx, text in enumerate(sentences, start=start_idx):  # Start from last used index
+with open(metadata_file, "a", newline="", encoding="utf-8") as csvfile:
+    csv_writer = csv.writer(csvfile, delimiter=",")
+    if not file_exists:
+        csv_writer.writerow(["path", "sentence", "speaker"])
+
+    for idx, text in enumerate(sentences, start=start_idx):
         filename = f"sentence{idx}.wav"
         filepath = os.path.join(output_folder, filename)
 
-        # Check if the file already exists to avoid re-processing
         if os.path.exists(filepath):
             print(f"Skipping existing file: {filename}")
             continue
 
         audio_config = speechsdk.audio.AudioOutputConfig(filename=filepath)
         synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
-
         result = synthesizer.speak_text_async(text).get()
 
         if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
             print(f"Speech synthesized to file: {filepath} for text: \"{text}\"")
-            csv_writer.writerow([filename, text])
+            csv_writer.writerow([filename, text, "1"])
         elif result.reason == speechsdk.ResultReason.Canceled:
             cancellation_details = result.cancellation_details
             print(f"Speech synthesis canceled: {cancellation_details.reason}")
