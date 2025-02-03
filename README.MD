@@ -2,30 +2,43 @@
 
 ```bash
 project_root/
-├── config.json
+├── configs/.env
 ├── data/
-│   ├── clip_durations.tsv
-│   ├── clips/
-│   ├── dev.tsv
-│   ├── invalidated.tsv
+│   ├── sentences.txt
+│   ├── sentences2.txt
+├── extracted_texts/
+│   ├── Kulturabg.txt
+│   ├── ...
+├── output_audio/
 │   ├── metadata.csv
-│   ├── other.tsv
-│   ├── reported.tsv
-│   ├── test.tsv
-│   ├── train.tsv
-│   ├── unvalidated_sentences.tsv
-│   ├── validated_sentences.tsv
-│   ├── validated.tsv
-│   └── wave/
-│       ├── metadata.csv
-├── data_prep.py
-├── finetune.py
+│   ├── Sentence1.wav
+│   ├── ...
+├── processed_texts/
+│   ├── Kulturabg_clean.txt
+│   ├── ...
+├── resampled_output_audio/
+│   ├── metadata.csv
+│   ├── Sentence1.wav
+│   ├── ...
+├── train_dir/
+│   ├── run-January-29-2025_10+40AM-0000000/
+│   │   ├── config.json
+│   │   └── trainer_0_log.txt
+│   │   └── best_model.pth
+├── utils/
+│   │   ├── oaitts1.py
+│   │   ├── ...
+├── VITS.py
+├── GlowTTS.py
 ├── README.MD
+├── .gitignore
+├── mode_meta.py
+├── inference.py
+├── formatters.py
+├── process_text.py
+├── convert_audio.sh
+├── generate_data.py
 ├── requirements.txt
-└── tts_train_dir/
-    └── run-January-29-2025_10+40AM-0000000/
-        ├── config.json
-        └── trainer_0_log.txt
 ```
 
 
