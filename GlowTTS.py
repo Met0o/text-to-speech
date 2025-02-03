@@ -47,7 +47,7 @@ config = GlowTTSConfig(
     num_eval_loader_workers=4,
     run_eval=True,
     test_delay_epochs=-1,
-    epochs=1000,
+    epochs=945,
     print_step=25,
     print_eval=False,
     mixed_precision=True,
@@ -68,24 +68,6 @@ config.characters = CharactersConfig(
     bos=None,
     blank=None,
 )
-
-# sample_rate = 16000
-# frame_shift_ms = 10    # 10 milliseconds
-# frame_length_ms = 25   # 25 milliseconds
-
-# hop_length = int(sample_rate * frame_shift_ms / 1000)  # 160
-# win_length = int(sample_rate * frame_length_ms / 1000)   # 400
-
-# config.audio = {
-#     "sample_rate": sample_rate,
-#     "num_mels": 80,
-#     "fft_size": 512,
-#     "hop_length": hop_length,
-#     "win_length": win_length,
-#     "frame_shift_ms": frame_shift_ms,
-#     "frame_length_ms": frame_length_ms,
-#     "power": 1.0,
-# }
 
 ap = AudioProcessor.init_from_config(config)
 

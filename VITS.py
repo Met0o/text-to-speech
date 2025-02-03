@@ -14,6 +14,7 @@ from TTS.tts.datasets.formatters import custom_bulgarian_formatter
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
+torch.backends.cudnn.enabled = False
 torch.backends.cudnn.benchmark = False
 
 output_path = "train_dir"
