@@ -52,6 +52,10 @@ config = GlowTTSConfig(
     print_eval=False,
     mixed_precision=True,
     output_path=output_path,
+    use_phonemes=True,
+    phoneme_language="bg",
+    phoneme_cache_path="phoneme_cache",
+    test_sentences=["Добре, всъщност ме питате дали това е твърда научна фантастика.", "Намира се на помалко от двадесет парсека от Фондацията."],
     datasets=[dataset_config],
 )
 

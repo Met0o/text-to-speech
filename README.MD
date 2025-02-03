@@ -22,6 +22,10 @@ With this dataset, the total number of synthesized characters through the Azure'
 
 There is also an option to use Azure's Free (F0) tier which allows for 0.5 million characters free per month, or Pay-as-You-Go tier which would cost €14.40 per 1 million synthesized characters.
 
+## Project setup
+
+
+
 ## Project strucutre
 
 ```bash
@@ -116,4 +120,5 @@ CUDA_VISIBLE_DEVICES=0 python GlowTTS.py --restore_path train_dir/run-February-0
 
 ```bash
 CUDA_VISIBLE_DEVICES=0,1 python -m trainer.distribute --script GlowTTS.py
+python3 -m trainer.distribute --gpus "0,1" --script GlowTTS.py --config_path config.json
 ```
