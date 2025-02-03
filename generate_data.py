@@ -20,7 +20,6 @@ except FileNotFoundError:
     print(f"Error: Could not find {input_file}")
     exit(1)
 
-# Output folders
 output_folder = "output_audio"
 os.makedirs(output_folder, exist_ok=True)
 metadata_file = os.path.join(output_folder, "metadata.csv")
@@ -30,7 +29,7 @@ existing_files = [f for f in os.listdir(output_folder) if f.startswith("sentence
 existing_indexes = [int(re.search(r"sentence(\d+)\.wav", f).group(1)) for f in existing_files if re.search(r"sentence(\d+)\.wav", f)]
 start_idx = max(existing_indexes) + 1 if existing_indexes else 1  # Start from next available index
 
-# Open CSV file in append mode to prevent overwriting previous entries
+# Use append mode to prevent overwriting previous entries (in the event of re-runs)
 with open(metadata_file, "a", newline="", encoding="utf-8") as csvfile:
     csv_writer = csv.writer(csvfile, delimiter="|")
 
@@ -38,7 +37,7 @@ with open(metadata_file, "a", newline="", encoding="utf-8") as csvfile:
         filename = f"sentence{idx}.wav"
         filepath = os.path.join(output_folder, filename)
 
-        # Check if the file already exists (avoid re-processing)
+        # Check if the file already exists to avoid re-processing
         if os.path.exists(filepath):
             print(f"Skipping existing file: {filename}")
             continue
@@ -50,7 +49,6 @@ with open(metadata_file, "a", newline="", encoding="utf-8") as csvfile:
 
         if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
             print(f"Speech synthesized to file: {filepath} for text: \"{text}\"")
-            # Write to metadata.csv
             csv_writer.writerow([filename, text])
         elif result.reason == speechsdk.ResultReason.Canceled:
             cancellation_details = result.cancellation_details

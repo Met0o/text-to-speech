@@ -34,17 +34,13 @@ def split_long_sentence(sentence, max_length=MAX_SENTENCE_LENGTH):
     return "\n".join(lines)
 
 def process_text(text):
-    # Remove unwanted characters
     text = re.sub(REMOVE_CHARS, "", text)
-
     # Remove references like "Бел.пр." and numbered items like "1.", "2."
     text = re.sub(REMOVE_REFERENCES, "", text)
-
     # Fix misplaced new lines (remove excessive indentation)
     text = re.sub(r"\n\s+", " ", text)
-
-    # Split into sentences using ".", "?", "!", and "," while preserving them
-    # sentences = re.split(r'(?<=[.!?,])\s+', text)
+    # Split into sentences using ".", "?", "!" while preserving them
+    # sentences = re.split(r'(?<=[.!?,])\s+', text) # includes commas for experiments
     sentences = re.split(r'(?<=[.!?])\s+', text)
     processed_sentences = []
     

@@ -12,13 +12,6 @@ from TTS.tts.datasets.formatters import custom_bulgarian_formatter
 
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 
-# torch.set_default_tensor_type('torch.cuda.FloatTensor')
-# torch.set_default_dtype(torch.float32)  # Ensure all computations use FP32
-# torch.set_default_device('cuda')  # Force default device to CUDA
-
-# torch.backends.cudnn.benchmark = True  # Optimize memory efficiency
-# torch.cuda.set_per_process_memory_fraction(0.95)  # Use 95% of available memory
-
 output_path = "train_dir"
 if not os.path.exists(output_path):
     os.makedirs(output_path)
