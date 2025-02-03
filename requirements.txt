@@ -1,0 +1,9 @@
+azure-cognitiveservices-speech
+bs4
+tts  
+torchaudio 
+transformers 
+soundfile
+python-dotenv
+openai
+pymupdf4llm
