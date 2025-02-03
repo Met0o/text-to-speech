@@ -23,7 +23,7 @@ if not os.path.exists(output_path):
 
 dataset_config = BaseDatasetConfig(
     formatter=None,
-    meta_file_train="metadata_updt.csv",
+    meta_file_train="metadata.csv",
     path="output_audio"
 )
 

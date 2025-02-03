@@ -8,11 +8,15 @@ Data gathering depends on the availability of a large corpus of Bulgarian text w
 
 Data processing involves cleaning, formatting and extracting sentences, creating a unified corpus of 34712 sentences with a corresponding metadata file.
 
-Since obtaining a large dataset of high-quality Bulgarian audio files is very difficult (if not impossible, excluding copyright data), the audio files are synthesized using the Azure Text-to-Speech API with `bg-BG-KalinaNeural` set as voice. I found this synthetic voice to be the most natural-sounding for Bulgarian text that currently exists. Even OpenAI's SOTA TTS-1 & TTS-1-HD models struggle to produce a natural-sounding Bulgarian voice. Besides their high cost does not justify the quality of the output.
+Since obtaining a large dataset of high-quality Bulgarian audio files is very difficult (if not impossible, excluding copyright data), the audio files are synthesized using the Azure Text-to-Speech API with `bg-BG-KalinaNeural` set as voice. I found this synthetic voice to be the most natural-sounding for Bulgarian text that currently exists. 
 
-With the current dataset size, the total number of synthesized characters through the API was 2.87 million. I've used Azure's Free Trial tier worth of €190.00 starting credit and the total cost of the API usage for generating the audio clips accounted to €40.33. 
+Unfortunately OpenAI's SOTA TTS-1 & TTS-1-HD models struggle to produce natural-sounding Bulgarian voice. Besides their high cost does not justify the poor quality of the output.
 
-The audio files are then resampled to 22050kHz and saved in the `resampled_output_audio` directory.
+With this dataset, the total number of synthesized characters through the Azure's API was 2.87 million. I've used Azure's Free Trial tier worth of €190.00 starting credit and after generating the audio clips the total cost of the API usage accounted to €40.33. 
+
+There is also an option to use Azure's Free (F0) tier which allows for 0.5 million characters free per month, or Pay-as-You-Go tier which would cost €14.396 per 1million synthesized characters.
+
+The audio files are then resampled to 22050kHz as Azure's API returns the wave samples at 16khz by default and then saved in the `resampled_output_audio` directory. There pobably exsists a way to define the sample rate directly in the API request but I realized this post-factum.
 
 ## Project strucutre
 

@@ -1,17 +1,20 @@
 import os
 
 def custom_bulgarian_formatter(root_path, meta_file, **kwargs):
-    """Custom formatter for Bulgarian Common Voice dataset."""
+    """
+    Custom formatter for Bulgarian Common Voice dataset.
+    Args:
+        root_path (str): Path to the root folder of the dataset.
+        meta_file (str): Name of the metadata file."""
     txt_file = os.path.join(root_path, meta_file)
     items = []
-    speaker_name = "bulgarian_common_voice"
+    speaker_name = "1"
 
     with open(txt_file, "r", encoding="utf-8") as ttf:
-        # Skip header row
         next(ttf)
         for line in ttf:
-            cols = line.strip().split(",")  # Adjust delimiter if needed.
-            if len(cols) < 3:  # Expect at least 3 columns: index, audio file, text, etc.
+            cols = line.strip().split(",")  # delimiter
+            if len(cols) < 3:  # Expect 3 columns: index, audio file, text, etc.
                 continue  # Skip malformed lines
 
             wav_file = os.path.join(root_path, cols[1])
@@ -25,5 +28,3 @@ def custom_bulgarian_formatter(root_path, meta_file, **kwargs):
             })
 
     return items
-
-
