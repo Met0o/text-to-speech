@@ -2,28 +2,36 @@ import os
 
 def custom_bulgarian_formatter(root_path, meta_file, **kwargs):
     """
-    Custom formatter for Bulgarian Common Voice dataset.
-    Args:
-        root_path (str): Path to the root folder of the dataset.
-        meta_file (str): Name of the metadata file."""
+    Custom formatter for Bulgarian Voice dataset.
+    Assumes the CSV file has a header and three columns:
+      - path: relative path to the audio file.
+      - sentence: text content.
+      - speaker: speaker id.
+    The delimiter is assumed to be "|" as produced by the synthesis code.
+    """
     txt_file = os.path.join(root_path, meta_file)
     items = []
-    speaker_name = "1"
 
-    with open(txt_file, "r", encoding="utf-8") as ttf:
-        next(ttf)
-        for line in ttf:
-            cols = line.strip().split(",")  # delimiter
-            if len(cols) < 3:  # Expect 3 columns: index, audio file, text, etc.
+    with open(txt_file, "r", encoding="utf-8") as f:
+        # Skip header row.
+        next(f)
+        for line in f:
+            # Split using the '|' delimiter.
+            cols = line.strip().split(",")
+            if len(cols) < 3:  # Expect at least three columns: path, sentence, speaker.
                 continue  # Skip malformed lines
 
-            wav_file = os.path.join(root_path, cols[1])
-            text = cols[2]
+            audio_filename = cols[0]
+            text = cols[1]
+            speaker = cols[2]
+
+            # Construct the full path to the audio file.
+            wav_file = os.path.join(root_path, audio_filename)
             items.append({
                 "text": text,
                 "audio_file": wav_file,
-                "speaker": speaker_name,
-                "speaker_name": speaker_name,
+                "speaker": speaker,
+                "speaker_name": speaker,
                 "root_path": root_path
             })
 

@@ -9,6 +9,7 @@ speech_key = config["speech_key"]
 service_region = config["service_region"]
 
 speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)
+speech_config.set_speech_synthesis_output_format(speechsdk.SpeechSynthesisOutputFormat.Riff22050Hz16BitMonoPcm)
 speech_config.speech_synthesis_voice_name = 'bg-BG-KalinaNeural'
 
 input_file = os.path.join('data', 'sentences.txt')

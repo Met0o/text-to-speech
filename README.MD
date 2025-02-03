@@ -8,15 +8,18 @@ Data gathering depends on the availability of a large corpus of Bulgarian text w
 
 Data processing involves cleaning, formatting and extracting sentences, creating a unified corpus of 34712 sentences with a corresponding metadata file.
 
-Since obtaining a large dataset of high-quality Bulgarian audio files is very difficult (if not impossible, excluding copyright data), the audio files are synthesized using the Azure Text-to-Speech API with `bg-BG-KalinaNeural` set as voice. I found this synthetic voice to be the most natural-sounding for Bulgarian text that currently exists. 
+Since obtaining a large dataset of high-quality Bulgarian audio files is very difficult (if not impossible, excluding copyright data), the audio files are synthesized using the Azure Text-to-Speech API with `bg-BG-KalinaNeural` set as voice. I found this synthetic voice to be the most natural-sounding for Bulgarian text that currently exists.
+
+To avoid the need to resample the audio files after they are generated, the Azure API is configured to return the audio files in 22050kHz 16bit PCM mono format. This is done by setting the output format in the speech config object:
+```python
+speech_config.set_speech_synthesis_output_format(speechsdk.SpeechSynthesisOutputFormat.Riff22050Hz16BitMonoPcm)
+```
 
 Unfortunately OpenAI's SOTA TTS-1 & TTS-1-HD models struggle to produce natural-sounding Bulgarian voice. Besides their high cost does not justify the poor quality of the output.
 
 With this dataset, the total number of synthesized characters through the Azure's API was 2.87 million. I've used Azure's Free Trial tier worth of €190.00 starting credit and after generating the audio clips the total cost of the API usage accounted to €40.33. 
 
 There is also an option to use Azure's Free (F0) tier which allows for 0.5 million characters free per month, or Pay-as-You-Go tier which would cost €14.396 per 1million synthesized characters.
-
-The audio files are then resampled to 22050kHz as Azure's API returns the wave samples at 16khz by default and then saved in the `resampled_output_audio` directory. There pobably exsists a way to define the sample rate directly in the API request but I realized this post-factum.
 
 ## Project strucutre
 
@@ -69,7 +72,7 @@ done
 ## Check audio sample rate
 
 ```bash 
-ffprobe -v error -select_streams a:0 -show_entries stream=sample_rate -of default=noprint_wrappers=1:nokey=1 resampled_output_audio/sentence1.wav
+ffprobe -v error -select_streams a:0 -show_entries stream=sample_rate -of default=noprint_wrappers=1:nokey=1 output_audio/sentence10.wav
 ```
 
 ## Resample the audio files to 22050kHz
