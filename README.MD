@@ -4,7 +4,7 @@ This project is designed to establish a pipeline for data gathering, data proces
 
 The main goal is to create a Bulgarian TTS model based on the [GlowTTS](https://coqui-tts.readthedocs.io/en/latest/models/glow_tts.html) architecture. 
 
-Data gathering depends on the availability of a large corpus of Bulgarian text which is obtained through web scraping the open-source website [chitanka.info](hhttps://chitanka.info/text/random.html) 
+Data gathering depends on the availability of a large corpus of Bulgarian text which is obtained through web scraping the open-source website [chitanka](https://chitanka.info/text/random.html)
 
 Data processing involves cleaning, formatting and extracting sentences, creating a unified corpus of 34712 sentences with a corresponding metadata file.
 
