@@ -26,42 +26,49 @@ There is also an option to use Azure's Free (F0) tier which allows for 0.5 milli
 
 ```bash
 project_root/
-├── configs/.env
+├── configs/
+│   ├── .env
 ├── data/
 │   ├── sentences.txt
 ├── extracted_texts/
 │   ├── AI Generated.txt
-│   ├── ...
+│   ├── Isaac Asimov - Foundation.txt
+│   ├── James Corey - Leviathan Awakens.txt
+│   ├── Isaac Asimov - Foundation and Imperium.txt
 ├── output_audio/
 │   ├── metadata.csv
 │   ├── Sentence1.wav
+│   ├── Sentence2.wav
 │   ├── ...
 ├── processed_texts/
 │   ├── sentences.txt
-│   ├── ...
+│   ├── AI Generated_clean.txt
+│   ├── Isaac Asimov - Foundation_clean.txt
+│   ├── James Corey - Leviathan Awakens_clean.txt
+│   ├── Isaac Asimov - Foundation and Imperium_clean.txt
 ├── train_dir/
 │   ├── run-February-03-2025_10+30AM-0000000/
 │   │   ├── config.json
-│   │   └── trainer_0_log.txt
 │   │   └── best_model.pth
+│   │   └── trainer_0_log.txt
+│   │   └── ...
 ├── utils/
+│   │   ├── pdf.py
+│   │   ├── VITS.py
 │   │   ├── oaitts1.py
-│   │   ├── ...
-├── VITS.py
-├── GlowTTS.py
+│   │   ├── mode_meta.py
+│   │   ├── convert_audio.sh
 ├── README.MD
+├── GlowTTS.py
 ├── .gitignore
-├── mode_meta.py
 ├── inference.py
 ├── formatters.py
 ├── process_text.py
-├── convert_audio.sh
 ├── generate_data.py
 ├── requirements.txt
 ```
 
-
-## Convert source clips from .mp3 to .wav format
+## Convert source clips from .mp3 to .wav
 
 ```bash
 for file in clips/*.mp3; do
@@ -75,7 +82,7 @@ done
 ffprobe -v error -select_streams a:0 -show_entries stream=sample_rate -of default=noprint_wrappers=1:nokey=1 output_audio/sentence10.wav
 ```
 
-## Resample the audio files to 22050kHz
+## Resample audio files to 22050kHz
 
 ```bash
 mkdir -p resampled_output_audio
@@ -85,20 +92,28 @@ done
 
 ```
 
-## Run the fine-tuning process
+## Run commands
+
+- Start training from scratch
 
 ```bash
-tts --train --config config.json
+CUDA_VISIBLE_DEVICES=0 python GlowTTS.py
 ```
 
-## Try distributed training
-
-```bash
-$ CUDA_VISIBLE_DEVICES="0, 1" python -m trainer.distribute --script VITS.py
-```
-
-## Continue training from a checkpoint
+- Continue a previous run
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python GlowTTS.py --continue_path train_dir/run-February-02-2025_11+19PM-0000000
+```
+
+- Fine-tune a model
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python GlowTTS.py --restore_path train_dir/run-February-02-2025_11+19PM-0000000/checkpoint.pth
+```
+
+- Run multi-gpu training
+
+```bash
+CUDA_VISIBLE_DEVICES=0,1 python -m trainer.distribute --script GlowTTS.py
 ```
