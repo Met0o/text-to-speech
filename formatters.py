@@ -2,12 +2,12 @@ import os
 
 def custom_bulgarian_formatter(root_path, meta_file, **kwargs):
     """
-    Custom formatter for Bulgarian Voice dataset.
+    Custom formatter for Bulgarian Voice dataset, adapted from the LJSpeech formatter.
     Assumes the CSV file has a header and three columns:
       - path: relative path to the audio file.
       - sentence: text content.
       - speaker: speaker id.
-    The delimiter is assumed to be "|" as produced by the synthesis code.
+    The delimiter is assumed to be "," as produced by the synthesis code.
     """
     txt_file = os.path.join(root_path, meta_file)
     items = []
@@ -16,9 +16,9 @@ def custom_bulgarian_formatter(root_path, meta_file, **kwargs):
         # Skip header row.
         next(f)
         for line in f:
-            # Split using the '|' delimiter.
+            # Split using the ',' delimiter.
             cols = line.strip().split(",")
-            if len(cols) < 3:  # Expect at least three columns: path, sentence, speaker.
+            if len(cols) < 3:  # path, sentence, speaker.
                 continue  # Skip malformed lines
 
             audio_filename = cols[0]

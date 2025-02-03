@@ -24,7 +24,9 @@ There is also an option to use Azure's Free (F0) tier which allows for 0.5 milli
 
 ## Project setup
 
+For optimal results, GlowTTS requires language-specific phoneme dictionary. The dictionary is created using the [espeak-ng](https://github.com/espeak-ng/espeak-ng/blob/master/docs/languages.md) tool, which if correctly installed will be picked up by the `GlowTTS.py` script and used to generate the phoneme dictionary for the Bulgarian language automatically.
 
+Installing espeak-ng is not trivial. Follow the instructions in the link above to install it on your system. The phoneme dictionary is ommited from the repo due to its large size.
 
 ## Project strucutre
 
