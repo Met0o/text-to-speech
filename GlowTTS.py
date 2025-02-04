@@ -22,23 +22,7 @@ dataset_config = BaseDatasetConfig(
     path="output_audio"
 )
 
-# bulgarian_list = [
-#     "а", "б", "в", "г", "д", "е", "ж", "з", "и", "й", "ѝ", "&",
-#     "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "х", "ç",
-#     "ф", "x", "ц", "ч", "ш", "щ", "ъ", "ь", "ю", "я", "é", "ö",
-#     "А", "Б", "В", "Г", "Д", "Е", "Ж", "З", "И", "Й", "’", "ό",
-#     "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "à",
-#     "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ъ", "Ь", "Ю", "Я", "/",
-#     "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "‘",
-#     " ", "—", ";" "a", "b", "c", "d", "e", "f", "g", "\xad",
-#     "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "№",
-#     "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "î",
-#     "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "^",
-#     "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "Ç",
-#     "V", "W", "X", "Y", "Z","ё", "ы","\"","‒", "ו", "צ", "è",
-# ]
-
-bulgarian_list = [' ""!,.?АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЮЯабвгдежзийклмнопрстуфхцчшщъьюя1234567890']
+bulgarian_list = ['" 0123456789?aeАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЮЯабвгдежзийклмнопрстуфхцчшщъьюя']
 
 bulgarian_chars = "".join(bulgarian_list)
 
@@ -54,8 +38,7 @@ config = GlowTTSConfig(
     print_eval=False,
     mixed_precision=True,
     output_path=output_path,
-    text_cleaner="phoneme_cleaners",
-    use_phonemes=True,
+    use_phonemes=False,
     phoneme_language="bg",
     phoneme_cache_path="phoneme_cache",
     test_sentences=[
@@ -72,7 +55,7 @@ torch.cuda.empty_cache()
 config.characters = CharactersConfig(
     characters_class="TTS.tts.utils.text.characters.Graphemes",
     characters=bulgarian_chars,
-    punctuations="-“„:…()}{'_–`»«",
+    punctuations="!+,-./",
     pad="<PAD>",
     eos="<EOS>",
     bos=None,

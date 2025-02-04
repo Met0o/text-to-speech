@@ -1,14 +1,13 @@
-import argparse
 import csv
+import argparse
 from argparse import RawTextHelpFormatter
 
 def main():
     parser = argparse.ArgumentParser(
-        description="""Adapted from the original code to find all the unique characters in metadata.csv.
-        
-Example run:
-    python find_unique_chars.py --meta_file output_audio/metadata.csv
-""",
+        description="""
+        Adapted from the original code to find all the unique characters in metadata.csv.
+        Example run: python find_unique_chars.py --meta_file output_audio/metadata.csv
+        """,
         formatter_class=RawTextHelpFormatter,
     )
     parser.add_argument("--meta_file", type=str, help="Path to the metadata CSV file.", required=True)

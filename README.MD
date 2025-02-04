@@ -6,7 +6,7 @@ The main goal is to create a Bulgarian TTS model based on the [GlowTTS](https://
 
 Data gathering compiles a large corpus of Bulgarian text which is obtained through the open-source website [chitanka](https://chitanka.info/text/random.html). 
 
-Data processing involves cleaning, formatting, and extracting sentences, creating a unified corpus of `25,719` sentences with a corresponding metadata file. Strict filtering is applied to remove too long or too short sentences, non-Bulgarian characters, formatting artifacts, and other unwanted text. Total audio duration is `31.46` hours.
+Data processing involves cleaning, formatting, and extracting sentences, creating a unified corpus of `20510` sentences with a corresponding metadata file. Strict filtering is applied to remove too long or too short sentences, non-Bulgarian characters, formatting artifacts, and other unwanted text. Total audio duration is `24.80` hours.
 
 Since obtaining a large dataset of high-quality Bulgarian audio files is very difficult (if not impossible, excluding copyright data), the audio files are synthesized using the Azure Text-to-Speech API with `bg-BG-KalinaNeural` set as the voice. I found this synthetic voice to be the most natural-sounding for Bulgarian text that currently exists.
 
