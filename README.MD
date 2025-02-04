@@ -6,21 +6,21 @@ The main goal is to create a Bulgarian TTS model based on the [GlowTTS](https://
 
 Data gathering compiles a large corpus of Bulgarian text which is obtained through the open-source website [chitanka](https://chitanka.info/text/random.html). 
 
-Data processing involves cleaning, formatting, and extracting sentences, creating a unified corpus of 25,719 sentences with a corresponding metadata file. Strict filtering is applied to remove too long or too short sentences, non-Bulgarian characters, formatting artifacts, and other unwanted text.
+Data processing involves cleaning, formatting, and extracting sentences, creating a unified corpus of `25,719` sentences with a corresponding metadata file. Strict filtering is applied to remove too long or too short sentences, non-Bulgarian characters, formatting artifacts, and other unwanted text. Total audio duration is `31.46` hours.
 
 Since obtaining a large dataset of high-quality Bulgarian audio files is very difficult (if not impossible, excluding copyright data), the audio files are synthesized using the Azure Text-to-Speech API with `bg-BG-KalinaNeural` set as the voice. I found this synthetic voice to be the most natural-sounding for Bulgarian text that currently exists.
 
-To avoid the need to resample the audio files after they are generated and align their spec with the model's architecture, the Azure API is configured to return the audio files in 22050kHz 16bit PCM mono format. This is done by setting the output format in the speech config object:
+To avoid the need to resample the audio files after they are generated and align their spec with the model's architecture, the Azure API is configured to return the audio files in `22050kHz 16bit PCM mono` format. This is done by setting the output format in the speech config object:
 
 ```python
-speech_config.set_speech_synthesis_output_format(speechsdk.SpeechSynthesisOutputFormat.Riff22050Hz16BitMonoPcm)
+- speech_config.set_speech_synthesis_output_format(speechsdk.SpeechSynthesisOutputFormat.Riff22050Hz16BitMonoPcm)
 ```
 
-Alternative text-to-speech cloud services such as OpenAI's tts-1, tts-1-hd models, and [Google TTS](https://cloud.google.com/text-to-speech/docs/voices), struggle to produce natural-sounding Bulgarian voice. Their output is choppy, robotic, and generally unpleasant to listen to. Many words are mispronounced, and the intonation is off.
+Alternative text-to-speech cloud services such as OpenAI's `tts-1`, `tts-1-hd` models, and [Google TTS](https://cloud.google.com/text-to-speech/docs/voices), struggle to produce natural-sounding Bulgarian voice. Their output is choppy, robotic, and generally unpleasant to listen to. Many words are mispronounced, and the intonation is off.
 
-With this dataset, the total number of synthesized characters through Azure's API was 1.44 million. I used Azure's Free Trial tier with a starting credit of €190.00. After generating audio multiple times throughout my experiments, the total number of synthesized characters reached 4.33 million, resulting in a total API usage cost of €49.10.
+With this dataset, the total number of synthesized characters through Azure's API was `1.44 million`. I used Azure's Free Trial tier with a starting credit of `€190.00`. After generating audio multiple times throughout my experiments, the total number of synthesized characters reached `4.33 million`, resulting in a total API usage cost of `€49.10`.
 
-There is also an option to use Azure's Free (F0) tier, which allows for 0.5 million characters free per month, or the Pay-as-You-Go tier, which costs €14.40 per 1 million synthesized characters.
+There is also an option to use Azure's Free (F0) tier, which allows for `0.5 million` characters free per month, or the Pay-as-You-Go tier, which costs `€14.40` per `1 million` synthesized characters.
 
 ## Project setup
 
