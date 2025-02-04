@@ -38,7 +38,7 @@ dataset_config = BaseDatasetConfig(
 #     "V", "W", "X", "Y", "Z","ё", "ы","\"","‒", "ו", "צ", "è",
 # ]
 
-bulgarian_list = [' ""!,.?АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЮЯабвгдежзийклмнопрстуфхцчшщъьюя']
+bulgarian_list = [' ""!,.?АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЮЯабвгдежзийклмнопрстуфхцчшщъьюя1234567890']
 
 bulgarian_chars = "".join(bulgarian_list)
 
@@ -54,8 +54,8 @@ config = GlowTTSConfig(
     print_eval=False,
     mixed_precision=True,
     output_path=output_path,
-    # text_cleaner="phoneme_cleaners",
-    # use_phonemes=True,
+    text_cleaner="phoneme_cleaners",
+    use_phonemes=True,
     phoneme_language="bg",
     phoneme_cache_path="phoneme_cache",
     test_sentences=[

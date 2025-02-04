@@ -38,7 +38,7 @@ def process_text(text):
     """
     # Normalize Unicode for consistency.
     text = unicodedata.normalize('NFC', text)
-
+    
     # Remove references and specific abbreviations.
     text = re.sub(REMOVE_REFERENCES, "", text)
     text = re.sub(r"т\. ?е\.", "", text)
@@ -46,10 +46,8 @@ def process_text(text):
 
     # Combine all whitespace (including newlines) into a single space.
     text = re.sub(r"\s+", " ", text)
-
     # Remove any character that isn't Cyrillic, whitespace, allowed punctuation, or digits.
     text = re.sub(r"[^\u0400-\u04FF\s.,!?\-0-9]", "", text)
-
     # Ensure punctuation marks are followed by a space.
     text = re.sub(r"([.!?])(?=[^\s])", r"\1 ", text)
 
@@ -113,7 +111,7 @@ def generate_numeric_sentences():
     examples = []
 
     # 1. Whole Numbers
-    unique_numbers = random.sample(range(1, 10001), 800)
+    unique_numbers = random.sample(range(1, 10001), 1000)
     for i in range(100):
         examples.append(f"{unique_numbers[i]} километра в час.")
         examples.append(f"{unique_numbers[i+100]} метра в секунда.")
@@ -123,10 +121,13 @@ def generate_numeric_sentences():
         examples.append(f"{unique_numbers[i+500]} инча.")
         examples.append(f"{unique_numbers[i+600]} милиметра.")
         examples.append(f"{unique_numbers[i+700]} хектопаскала.")
+        examples.append(f"{unique_numbers[i+800]} милиона.")
+        examples.append(f"{unique_numbers[i+900]} милиарда.")
 
     # 2. Decimals
-    for _ in range(100):
-        num = round(random.uniform(-70, 65), 2)
+    for _ in range(25):
+        num = round(random.uniform(50, 0), 2)
+        examples.append(f"Температурата е минус {num} градуса.")
         examples.append(f"Температурата е {num} градуса.")
 
     # 3. Large Numbers
@@ -156,12 +157,13 @@ def generate_numeric_sentences():
         examples.append(f"Датата е {day} {month}.")
 
     # 6. Money
-    for _ in range(1000):
+    for _ in range(100):
         amount = round(random.uniform(1, 500000), 2)
         examples.append(f"Цената на продукта е {amount} лева.")
-        examples.append(f"Себестойността на стоката е {amount} лв.")
+        examples.append(f"Себестойността на стоката е {amount} лeвa.")
         examples.append(f"Стойността на артикула е {amount} евро.")
         examples.append(f"Данъчната оценка на имота е {amount} евро.")
+        examples.append(f"Буртният вътрешен продукт, възлиза на {amount} лева.")
 
     # 7. Phone Numbers (Various formats)
     phone_formats = [
@@ -184,11 +186,10 @@ def generate_numeric_sentences():
     # 10. Additional numeric contexts
     examples.append("Номерът на стаята е 202.")
     examples.append("Теглото на пакета е 7 килограма.")
-    for _ in range(100):
+    for _ in range(50):
         weight = round(random.uniform(1, 100))
         examples.append(f"Теглото на пакета е {weight} килограма.")
         examples.append(f"Обемът на кутията е {weight} литра.")
-        examples.append(f"Номерът на стаята е {weight}.")
 
     return examples
 
@@ -221,7 +222,8 @@ def count_numbers(text):
 
 def combine_processed_texts():
     """
-    Combine all cleaned text files and generated numeric sentences into one file.
+    Combine all cleaned text files and generated numeric sentences into one file,
+    then randomly shuffle the sentences so numeric sentences are mixed with the rest.
     """
     combined_text = ""
 
@@ -238,14 +240,20 @@ def combine_processed_texts():
         with open(generated_numeric_path, "r", encoding="utf-8") as infile:
             combined_text += infile.read() + "\n"
 
-    # 3) Now WRITE it to the combined file
-    combined_path = os.path.join(PROCESSED_DIR, "sentences_with_numbers.txt")
-    with open(combined_path, "w", encoding="utf-8") as outfile:
-        outfile.write(combined_text)
+    # 3) Split the text into a list of sentences, shuffle it,
+    #    then join back together.
+    sentences = combined_text.strip().split("\n")
+    random.shuffle(sentences)
+    shuffled_text = "\n".join(sentences)
 
-    # 4) Calculate stats from that combined text
-    total_words = count_total_words(combined_text)
-    total_numbers = count_numbers(combined_text)
+    # 4) Write the shuffled text to the combined file.
+    combined_path = os.path.join(PROCESSED_DIR, "sentences.txt")
+    with open(combined_path, "w", encoding="utf-8") as outfile:
+        outfile.write(shuffled_text)
+
+    # 5) Calculate and print statistics from the shuffled text.
+    total_words = count_total_words(shuffled_text)
+    total_numbers = count_numbers(shuffled_text)
     percentage_numeric = (total_numbers / total_words) * 100 if total_words else 0
     print(f"Numbers make up {percentage_numeric:.2f}% of the full dataset.")
 
