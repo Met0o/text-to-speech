@@ -7,7 +7,7 @@ def custom_bulgarian_formatter(root_path, meta_file, **kwargs):
       - path: relative path to the audio file.
       - sentence: text content.
       - speaker: speaker id.
-    The delimiter is assumed to be "," as produced by the synthesis code.
+    The delimiter is must be "," as produced by the synthesis code.
     """
     txt_file = os.path.join(root_path, meta_file)
     items = []
@@ -16,7 +16,7 @@ def custom_bulgarian_formatter(root_path, meta_file, **kwargs):
         # Skip header row.
         next(f)
         for line in f:
-            # Split using the ',' delimiter.
+            # Split using ',' as delimiter.
             cols = line.strip().split(",")
             if len(cols) < 3:  # path, sentence, speaker.
                 continue  # Skip malformed lines

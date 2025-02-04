@@ -9,6 +9,7 @@ os.makedirs(PROCESSED_DIR, exist_ok=True)
 REMOVE_CHARS = r"[*—_„“\[\]…]"
 REMOVE_REFERENCES = r"(р\.|Б\.|т\.н\.|т\.e\.|Б\.а\.|Бел\.пр\.|\b\d+\.)"
 MAX_SENTENCE_CHARACTERS = 150
+MIN_SENTENCE_CHARACTERS = 10
 
 def process_text(text):
     # Remove unwanted characters, references, and abbreviations in one pass.
@@ -37,7 +38,7 @@ def process_text(text):
         sentence = re.sub(r"^[,\s]+", "", sentence)
         
         # Skip sentences that are too short or too long.
-        if len(sentence) < 10 or len(sentence) > MAX_SENTENCE_CHARACTERS:
+        if len(sentence) < MIN_SENTENCE_CHARACTERS or len(sentence) > MAX_SENTENCE_CHARACTERS:
             continue
         
         processed_sentences.append(sentence)
@@ -66,6 +67,9 @@ for filename in os.listdir(EXTRACTED_DIR):
 print("Processing complete! Cleaned files saved in 'processed_texts' folder.")
 
 def combine_processed_texts():
+    """
+    Combine all cleaned text files into one file.
+    """
     combined_text = ""
     for filename in os.listdir(PROCESSED_DIR):
         if filename.endswith("_clean.txt"):
@@ -73,6 +77,7 @@ def combine_processed_texts():
             with open(file_path, "r", encoding="utf-8") as infile:
                 combined_text += infile.read() + "\n"
     combined_path = os.path.join(PROCESSED_DIR, "sentences.txt")
+    
     with open(combined_path, "w", encoding="utf-8") as outfile:
         outfile.write(combined_text)
     print(f"Combined file created at: {combined_path}")
