@@ -156,11 +156,12 @@ def generate_numeric_sentences():
         examples.append(f"Датата е {day} {month}.")
 
     # 6. Money
-    for _ in range(100):
-        amount = round(random.uniform(1, 10000), 2)
+    for _ in range(1000):
+        amount = round(random.uniform(1, 500000), 2)
         examples.append(f"Цената на продукта е {amount} лева.")
         examples.append(f"Себестойността на стоката е {amount} лв.")
         examples.append(f"Стойността на артикула е {amount} евро.")
+        examples.append(f"Данъчната оценка на имота е {amount} евро.")
 
     # 7. Phone Numbers (Various formats)
     phone_formats = [
@@ -224,28 +225,29 @@ def combine_processed_texts():
     """
     combined_text = ""
 
-    # Add existing cleaned text
+    # 1) Gather all cleaned text
     for filename in os.listdir(PROCESSED_DIR):
         if filename.endswith("_clean.txt"):
             file_path = os.path.join(PROCESSED_DIR, filename)
             with open(file_path, "r", encoding="utf-8") as infile:
                 combined_text += infile.read() + "\n"
 
-    # Add generated numeric sentences
+    # 2) Add generated numeric sentences
     generated_numeric_path = os.path.join(PROCESSED_DIR, "generated_numeric_sentences.txt")
     if os.path.exists(generated_numeric_path):
         with open(generated_numeric_path, "r", encoding="utf-8") as infile:
             combined_text += infile.read() + "\n"
 
+    # 3) Now WRITE it to the combined file
     combined_path = os.path.join(PROCESSED_DIR, "sentences_with_numbers.txt")
-    with open(combined_path, "r", encoding="utf-8") as infile:
-        combined_text = infile.read()
-        total_words = count_total_words(combined_text)
-        total_numbers = count_numbers(combined_text)
+    with open(combined_path, "w", encoding="utf-8") as outfile:
+        outfile.write(combined_text)
 
+    # 4) Calculate stats from that combined text
+    total_words = count_total_words(combined_text)
+    total_numbers = count_numbers(combined_text)
     percentage_numeric = (total_numbers / total_words) * 100 if total_words else 0
     print(f"Numbers make up {percentage_numeric:.2f}% of the full dataset.")
-
 
 # --------------------------------------------------------------------
 # 7. Main execution
@@ -254,11 +256,9 @@ def combine_processed_texts():
 def main():
     # 1) Process all files in EXTRACTED_DIR -> PROCESSED_DIR
     process_all_files()
-
     # 2) Generate synthetic numeric data and save to file
     numeric_sentences = generate_numeric_sentences()
     save_generated_sentences(numeric_sentences)
-
     # 3) Calculate how many numbers vs total words in all cleaned files
     total_words = 0
     total_numbers = 0
@@ -269,13 +269,6 @@ def main():
                 text = infile.read()
                 total_words += count_total_words(text)
                 total_numbers += count_numbers(text)
-
-    # Avoid zero-division if no words
-    if total_words > 0:
-        percentage_numeric = (total_numbers / total_words) * 100
-        print(f"Numbers make up {percentage_numeric:.2f}% of the generated dataset.")
-    else:
-        print("No words found in processed files.")
 
     combine_processed_texts()
 
