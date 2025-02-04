@@ -54,6 +54,7 @@ config = GlowTTSConfig(
     print_eval=False,
     mixed_precision=True,
     output_path=output_path,
+    # text_cleaner="phoneme_cleaners",
     # use_phonemes=True,
     phoneme_language="bg",
     phoneme_cache_path="phoneme_cache",

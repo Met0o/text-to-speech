@@ -52,6 +52,8 @@ project_root/
 │   ├── Isaac Asimov - Foundation_clean.txt
 │   ├── James Corey - Leviathan Awakens_clean.txt
 │   ├── Isaac Asimov - Foundation and Imperium_clean.txt
+├── phoneme_cache/
+│   ├── ommited
 ├── train_dir/
 │   ├── run-February-03-2025_10+30AM-0000000/
 │   │   ├── config.json
@@ -64,6 +66,8 @@ project_root/
 │   │   ├── oaitts1.py
 │   │   ├── mode_meta.py
 │   │   ├── convert_audio.sh
+│   │   ├── find_unique_chars.py
+│   │   ├── measure_audio_length.py
 ├── README.MD
 ├── GlowTTS.py
 ├── .gitignore
