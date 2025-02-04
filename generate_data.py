@@ -59,7 +59,7 @@ def synthesize_speech(text: str, filepath: str) -> speechsdk.SpeechSynthesisResu
     synthesizer = speechsdk.SpeechSynthesizer(
         speech_config=speech_config, audio_config=audio_config
     )
-    time.sleep(0.2)
+    time.sleep(2)
     result = synthesizer.speak_text_async(text).get()
     return result
 
