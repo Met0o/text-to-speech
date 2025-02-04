@@ -113,19 +113,26 @@ def generate_numeric_sentences():
     examples = []
 
     # 1. Whole Numbers
-    for _ in range(100):
-        num = random.randint(1, 10000)
-        examples.append(f"Числото {num} е важно в математиката.")
+    unique_numbers = random.sample(range(1, 10001), 800)
+    for i in range(100):
+        examples.append(f"{unique_numbers[i]} километра в час.")
+        examples.append(f"{unique_numbers[i+100]} метра в секунда.")
+        examples.append(f"{unique_numbers[i+200]} метра.")
+        examples.append(f"{unique_numbers[i+300]} мили.")
+        examples.append(f"{unique_numbers[i+400]} сантиметра.")
+        examples.append(f"{unique_numbers[i+500]} инча.")
+        examples.append(f"{unique_numbers[i+600]} милиметра.")
+        examples.append(f"{unique_numbers[i+700]} хектопаскала.")
 
     # 2. Decimals
-    for _ in range(50):
-        num = round(random.uniform(0.1, 999.99), 2)
-        examples.append(f"Температурата днес е {num} градуса.")
+    for _ in range(100):
+        num = round(random.uniform(-70, 65), 2)
+        examples.append(f"Температурата е {num} градуса.")
 
     # 3. Large Numbers
     large_nums = [str(random.randint(100000, 9999999)) for _ in range(10)]
     for num in large_nums:
-        examples.append(f"Населението на този град е {num} души.")
+        examples.append(f"Населението е {num} души.")
     examples.append("Бюджетът за проекта е 1000000 лева.")
     examples.append("Сметката за тока достигна 500000 лева.")
     examples.append("Инвестицията от 75000000 лева бе одобрена.")
@@ -137,11 +144,11 @@ def generate_numeric_sentences():
         examples.append(f"{i}-рият опит беше успешен.")
 
     # 5. Years & Dates
-    years = [1984, 1999, 2003, 2008, 2019, 2021, 2025, 2030, 2050]
+    years = [1984, 1987, 1989, 1999, 2003, 2010, 2008, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2030, 2050]
     for year in years:
         examples.append(f"През {year} се случиха важни събития.")
     
-    for _ in range(50):
+    for _ in range(100):
         day = random.randint(1, 31)
         month = random.choice(["януари", "февруари", "март", "април", 
                               "май", "юни", "юли", "август", 
@@ -149,9 +156,11 @@ def generate_numeric_sentences():
         examples.append(f"Датата е {day} {month}.")
 
     # 6. Money
-    for _ in range(50):
+    for _ in range(100):
         amount = round(random.uniform(1, 10000), 2)
         examples.append(f"Цената на продукта е {amount} лева.")
+        examples.append(f"Себестойността на стоката е {amount} лв.")
+        examples.append(f"Стойността на артикула е {amount} евро.")
 
     # 7. Phone Numbers (Various formats)
     phone_formats = [
@@ -160,14 +169,11 @@ def generate_numeric_sentences():
         "02 987 6543",
         "0897 12 34 56",
         "+359 52 123456",
-        "087 765 43 21"
+        "087 765 43 21",
+        "0885 536 98 73"
     ]
     for phone in phone_formats:
         examples.append(f"Моят телефонен номер е {phone}.")
-
-    # 8. Scientific notation
-    examples.append("Скоростта на светлината е 3.0e8 метра в секунда.")
-    examples.append("Константата на Планк е 6.626e-34 J·s.")
 
     # 9. Fractions
     examples.append("Половината от ябълката е 1/2.")
@@ -176,10 +182,12 @@ def generate_numeric_sentences():
 
     # 10. Additional numeric contexts
     examples.append("Номерът на стаята е 202.")
-    examples.append("Теглото на пакета е 7.5 килограма.")
-    for _ in range(20):
-        weight = round(random.uniform(1, 100), 1)
+    examples.append("Теглото на пакета е 7 килограма.")
+    for _ in range(100):
+        weight = round(random.uniform(1, 100))
         examples.append(f"Теглото на пакета е {weight} килограма.")
+        examples.append(f"Обемът на кутията е {weight} литра.")
+        examples.append(f"Номерът на стаята е {weight}.")
 
     return examples
 
@@ -230,10 +238,13 @@ def combine_processed_texts():
             combined_text += infile.read() + "\n"
 
     combined_path = os.path.join(PROCESSED_DIR, "sentences_with_numbers.txt")
-    with open(combined_path, "w", encoding="utf-8") as outfile:
-        outfile.write(combined_text)
+    with open(combined_path, "r", encoding="utf-8") as infile:
+        combined_text = infile.read()
+        total_words = count_total_words(combined_text)
+        total_numbers = count_numbers(combined_text)
 
-    print(f"Combined dataset created at: {combined_path}")
+    percentage_numeric = (total_numbers / total_words) * 100 if total_words else 0
+    print(f"Numbers make up {percentage_numeric:.2f}% of the full dataset.")
 
 
 # --------------------------------------------------------------------
@@ -262,7 +273,7 @@ def main():
     # Avoid zero-division if no words
     if total_words > 0:
         percentage_numeric = (total_numbers / total_words) * 100
-        print(f"Numbers make up {percentage_numeric:.2f}% of the dataset.")
+        print(f"Numbers make up {percentage_numeric:.2f}% of the generated dataset.")
     else:
         print("No words found in processed files.")
 
