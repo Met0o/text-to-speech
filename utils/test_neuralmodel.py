@@ -21,4 +21,4 @@ def text_to_speech(text, output_file="output.wav"):
         print(f"Error: {result.cancellation_details.error_details}")
         return False
 
-text_to_speech("Температурата е 12.22 градуса.", "output.wav")
+text_to_speech("5517 милиона.", "output.wav")

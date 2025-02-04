@@ -247,7 +247,8 @@ def combine_processed_texts():
     shuffled_text = "\n".join(sentences)
 
     # 4) Write the shuffled text to the combined file.
-    combined_path = os.path.join(PROCESSED_DIR, "sentences.txt")
+    # combined_path = os.path.join(PROCESSED_DIR, "sentences.txt")
+    combined_path = os.path.join("data", "sentences.txt")
     with open(combined_path, "w", encoding="utf-8") as outfile:
         outfile.write(shuffled_text)
 
