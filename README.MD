@@ -18,7 +18,7 @@ To avoid the need to resample the audio files after they are generated and align
 
 Alternative text-to-speech cloud services such as OpenAI's `tts-1`, `tts-1-hd` models, and [Google TTS](https://cloud.google.com/text-to-speech/docs/voices), struggle to produce natural-sounding Bulgarian voice. Their output is choppy, robotic, and generally unpleasant to listen to. Many words are mispronounced, and the intonation is off.
 
-With this dataset, the total number of synthesized characters through Azure's API was `1.08 million` with approximate cost of `€15`. I used Azure's Free Trial tier with a starting credit of `€190.00`. After generating audio multiple times throughout my experiments, the total number of synthesized characters reached `4.33 million`, resulting in a total API usage cost of `€60.77`.
+With this dataset, the total number of synthesized characters through Azure's API was `1.08 million` with approximate cost of `€15`. I used Azure's Free Trial tier with a starting credit of `€190.00`. After generating audio multiple times throughout my experiments, the total number of synthesized characters reached `7.79 million`, resulting in a total API usage cost of `€109.41`.
 
 There is also an option to use Azure's Free (F0) tier, which allows for `0.5 million` characters free per month, or the Pay-as-You-Go tier, which costs `€14.40` per `1 million` synthesized characters.
 
