@@ -1,4 +1,3 @@
-azure-ai-formrecognizer
 azure-cognitiveservices-speech
 ipywidgets
 tts  
@@ -6,4 +5,3 @@ torchaudio
 transformers 
 soundfile
 python-dotenv
-openai

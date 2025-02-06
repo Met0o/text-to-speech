@@ -20,7 +20,6 @@ MIN_SENTENCE_CHARACTERS = 10
 # Ensure the processed directory exists.
 os.makedirs(PROCESSED_DIR, exist_ok=True)
 
-
 # --------------------------------------------------------------------
 # 2. Text processing
 # --------------------------------------------------------------------
@@ -71,7 +70,6 @@ def process_text(text):
 
     return processed_text
 
-
 # --------------------------------------------------------------------
 # 3. Processing files
 # --------------------------------------------------------------------
@@ -96,7 +94,6 @@ def process_all_files():
                 outfile.write(processed_text)
 
     print("Processing complete! Cleaned files saved in 'processed_texts' folder.")
-
 
 # --------------------------------------------------------------------
 # 4. Synthetic data generation
@@ -202,19 +199,21 @@ def save_generated_sentences(sentences, filename="generated_numeric_sentences.tx
         outfile.write("\n".join(sentences))
     print(f"Generated {len(sentences)} numeric sentences and saved them to {output_file}.")
 
-
 # --------------------------------------------------------------------
 # 5. Statistics calculation
 # --------------------------------------------------------------------
 
 def count_total_words(text):
-    """Return the total number of words in the text (splitting on whitespace)."""
+    """
+    Return the total number of words in the text (splitting on whitespace).
+    """
     return len(text.split())
 
 def count_numbers(text):
-    """Return the count of numeric tokens (digits grouped together)."""
+    """
+    Return the count of numeric tokens (digits grouped together).
+    """
     return len(re.findall(r"\b\d+\b", text))
-
 
 # --------------------------------------------------------------------
 # 6. Combining processed data
@@ -240,8 +239,7 @@ def combine_processed_texts():
         with open(generated_numeric_path, "r", encoding="utf-8") as infile:
             combined_text += infile.read() + "\n"
 
-    # 3) Split the text into a list of sentences, shuffle it,
-    #    then join back together.
+    # 3) Split the text into a list of sentences, shuffle it, and then join back together.
     sentences = combined_text.strip().split("\n")
     random.shuffle(sentences)
     shuffled_text = "\n".join(sentences)
