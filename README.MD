@@ -8,7 +8,7 @@ Data gathering compiles a large corpus of Bulgarian text which is obtained throu
 
 Data processing involves cleaning, formatting, and extracting sentences, creating a unified corpus of `20510` sentences with a corresponding metadata file. Strict filtering is applied to remove too long or too short sentences, non-Bulgarian characters, formatting artifacts, and other unwanted text. Total audio duration is `24.80` hours.
 
-Since obtaining a large dataset of high-quality Bulgarian audio files is very difficult (if not impossible, excluding copyright data), the audio files are synthesized using the Azure Text-to-Speech API with `bg-BG-KalinaNeural` set as the voice. I found this synthetic voice to be the most natural-sounding for Bulgarian text that currently exists.
+Since obtaining a large dataset of high-quality Bulgarian audio files is very difficult (if not impossible, excluding copyright data), the audio files are synthesized using the Azure Text-to-Speech API with `bg-BG-KalinaNeural` set as the voice. I found this synthetic voice to be the most natural-sounding for Bulgarian speech that currently exists.
 
 To avoid the need to resample the audio files after they are generated and align their spec with the model's architecture, the Azure API is configured to return the audio files in `22050kHz 16bit PCM mono` format. This is done by setting the output format in the speech config object:
 
@@ -24,9 +24,9 @@ There is also an option to use Azure's Free (F0) tier, which allows for `0.5 mil
 
 ## Project setup
 
-For optimal results, GlowTTS requires a language-specific phoneme dictionary `config = GlowTTSConfig(phoneme_language="bg", phoneme_cache_path="phoneme_cache"`. The dictionary is created using the [espeak-ng](https://github.com/espeak-ng/espeak-ng/blob/master/docs/languages.md) tool, which if correctly installed will be picked up by the `GlowTTS.py` script and used to generate the phoneme dictionary for the Bulgarian language automatically. I have not verified if the dictionary is applied if `use_phonemes=False` is set in the config.
+For optimal results, GlowTTS requires a language-specific phoneme dictionary `config = GlowTTSConfig(phoneme_language="bg", phoneme_cache_path="phoneme_cache"`. The dictionary is created using the [espeak-ng](https://github.com/espeak-ng/espeak-ng/blob/master/docs/languages.md) tool, which if correctly installed will be picked up by the `GlowTTS.py` script and used to generate the phoneme dictionary for the Bulgarian language automatically. I decided not to use the phoneme settings during training and set the flag `use_phonemes=False` in the config.
 
-Installing espeak-ng is not trivial. Follow the instructions in the link above to install it on your system. The phoneme dictionary is omitted from the repo due to its large size.
+If you decided to go with phonemes, be warned that installing espeak-ng is not trivial. Follow the instructions from the espeak-ng link to install it on your system. The phoneme dictionary is omitted from the repo due to its large size.
 
 ## Project strucutre
 
