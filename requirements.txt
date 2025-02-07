@@ -1,7 +1,9 @@
 azure-cognitiveservices-speech
+cmudict
 ipywidgets
 tts  
 torchaudio
-transformers 
+transformers
+seaborn
 soundfile
 python-dotenv

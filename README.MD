@@ -166,7 +166,7 @@ CUDA_VISIBLE_DEVICES=0 python GlowTTS.py
 - Continue a previous run
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python GlowTTS.py --continue_path train_dir/run-February-02-2025_11+19PM-0000000
+CUDA_VISIBLE_DEVICES=0 python GlowTTS.py --continue_path train_dir/run-February-04-2025_02+52PM-8b5b6b9
 ```
 
 - Fine-tune a model

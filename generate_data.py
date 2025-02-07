@@ -2,6 +2,8 @@ import os
 import re
 import csv
 import time
+import random
+import logging
 import concurrent.futures
 from dotenv import dotenv_values
 import azure.cognitiveservices.speech as speechsdk
@@ -59,9 +61,23 @@ def synthesize_speech(text: str, filepath: str) -> speechsdk.SpeechSynthesisResu
     synthesizer = speechsdk.SpeechSynthesizer(
         speech_config=speech_config, audio_config=audio_config
     )
+    # Small delay before each request to avoid overwhelming the service.
     time.sleep(2)
-    result = synthesizer.speak_text_async(text).get()
-    return result
+    
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            result = synthesizer.speak_text_async(text).get()
+            return result
+        except Exception as e:
+            logging.error(f"Attempt {attempt + 1} failed for \"{text}\": {e}")
+            if attempt < max_retries - 1:
+                sleep_duration = (2 ** attempt) + random.random()  # Exponential backoff with jitter
+                logging.info(f"Retrying in {sleep_duration:.2f} seconds...")
+                time.sleep(sleep_duration)
+            else:
+                logging.error(f"Max retries reached for \"{text}\".")
+                raise  # Re-raise the exception if all retries failed
 
 # --------------------
 # Main Logic with Parallel Execution
@@ -109,12 +125,16 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_CONCURRENT_REQUESTS) 
 # --------------------
 # Write/Append to CSV
 # --------------------
-with open(metadata_file, "a", newline="", encoding="utf-8") as csvfile:
-    csv_writer = csv.writer(csvfile, delimiter=",")
-    if not file_exists:
-        csv_writer.writerow(["path", "sentence", "speaker"])
+try:
+    with open(metadata_file, "a", newline="", encoding="utf-8") as csvfile:
+        csv_writer = csv.writer(csvfile, delimiter=",")
+        if not file_exists:
+            csv_writer.writerow(["path", "sentence", "speaker"])
 
-    for record in csv_records:
-        csv_writer.writerow(record)
+        for record in csv_records:
+            csv_writer.writerow(record)
 
-print(f"Metadata file updated: {metadata_file}")
+    print(f"Metadata file updated: {metadata_file}")
+
+except Exception as e:
+    print(f"Error writing to metadata file: {e}")
