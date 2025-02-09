@@ -1,5 +1,5 @@
+tts/
 .venv/
-.env
 *.wav
 *.pth
 train_dir/
