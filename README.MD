@@ -173,6 +173,11 @@ CUDA_VISIBLE_DEVICES=0 python GlowTTS.py --continue_path train_dir/run-February-
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python GlowTTS.py --restore_path train_dir/run-February-02-2025_11+19PM-0000000/checkpoint.pth
+
+CUDA_VISIBLE_DEVICES="0" python VITS.py \
+    --config_path  tts_models--bg--cv--vits/config.json \
+    --restore_path  tts_models--bg--cv--vits/model.pth
+
 ```
 
 - Run multi-gpu training
