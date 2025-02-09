@@ -177,12 +177,14 @@ CUDA_VISIBLE_DEVICES=0 python GlowTTS.py --restore_path train_dir/run-February-0
 CUDA_VISIBLE_DEVICES="0" python VITS.py \
     --config_path  tts_models--bg--cv--vits/config.json \
     --restore_path  tts_models--bg--cv--vits/model.pth
-
 ```
 
 - Run multi-gpu training
 
 ```bash
 CUDA_VISIBLE_DEVICES=0,1 python -m trainer.distribute --script GlowTTS.py
-python3 -m trainer.distribute --gpus "0,1" --script GlowTTS.py --config_path config.json
+
+CUDA_VISIBLE_DEVICES=0,1 python -m trainer.distribute --script VITS.py \
+    --config_path  tts_models--bg--cv--vits/config.json \
+    --restore_path  tts_models--bg--cv--vits/model.pth
 ```

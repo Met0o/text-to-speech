@@ -1,16 +1,15 @@
 import os
 from glob import glob
-
 from trainer import Trainer, TrainerArgs
-from formatters import custom_bulgarian_formatter
-from TTS.tts.configs.shared_configs import BaseDatasetConfig
-from TTS.tts.configs.vits_config import VitsConfig
-from TTS.tts.datasets import load_tts_samples
-from TTS.tts.models.vits import Vits, VitsArgs, VitsAudioConfig
-from TTS.tts.utils.languages import LanguageManager
-from TTS.tts.utils.speakers import SpeakerManager
-from TTS.tts.utils.text.tokenizer import TTSTokenizer
 from TTS.utils.audio import AudioProcessor
+from TTS.tts.datasets import load_tts_samples
+from TTS.tts.utils.speakers import SpeakerManager
+from formatters import custom_bulgarian_formatter
+from TTS.tts.configs.vits_config import VitsConfig
+from TTS.tts.utils.languages import LanguageManager
+from TTS.tts.utils.text.tokenizer import TTSTokenizer
+from TTS.tts.configs.shared_configs import BaseDatasetConfig
+from TTS.tts.models.vits import Vits, VitsArgs, VitsAudioConfig
 
 output_path = "train_dir"
 
@@ -81,13 +80,10 @@ config = VitsConfig(
     ],
 )
 
-# force the convertion of the custom characters to a config attribute
 config.from_dict(config.to_dict())
 
-# init audio processor
 ap = AudioProcessor(**config.audio.to_dict())
 
-# load training samples
 train_samples, eval_samples = load_tts_samples(
     dataset_config,
     eval_split=True,
@@ -96,8 +92,6 @@ train_samples, eval_samples = load_tts_samples(
     formatter=custom_bulgarian_formatter,
 )
 
-# init speaker manager for multi-speaker training
-# it maps speaker-id to speaker-name in the model and data-loader
 speaker_manager = SpeakerManager()
 speaker_manager.set_ids_from_data(train_samples + eval_samples, parse_key="speaker_name")
 config.model_args.num_speakers = speaker_manager.num_speakers
@@ -105,15 +99,10 @@ config.model_args.num_speakers = speaker_manager.num_speakers
 language_manager = LanguageManager(config=config)
 config.model_args.num_languages = language_manager.num_languages
 
-# INITIALIZE THE TOKENIZER
-# Tokenizer is used to convert text to sequences of token IDs.
-# config is updated with the default characters if not defined in the config.
 tokenizer, config = TTSTokenizer.init_from_config(config)
 
-# init model
 model = Vits(config, ap, tokenizer, speaker_manager, language_manager)
 
-# init the trainer and 🚀
 trainer = Trainer(
     TrainerArgs(), config, output_path, model=model, train_samples=train_samples, eval_samples=eval_samples
 )
