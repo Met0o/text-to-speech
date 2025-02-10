@@ -16,9 +16,14 @@ output_path = "train_dir"
 if not os.path.exists(output_path):
     os.makedirs(output_path)
 
+# dataset_paths = [
+#     path for path in glob(os.path.join(output_path, "*"))
+#     if os.path.basename(path) != "phoneme_cache"
+# ]
+
 dataset_paths = [
     path for path in glob(os.path.join(output_path, "*"))
-    if os.path.basename(path) != "phoneme_cache"
+    if os.path.basename(path) != "phoneme_cache" and os.path.exists(os.path.join(path, "metadata.csv"))
 ]
 
 dataset_config = [
@@ -60,7 +65,7 @@ config = VitsConfig(
     precompute_num_workers=12,
     run_eval=True,
     test_delay_epochs=-1,
-    epochs=100,
+    epochs=400,
     text_cleaner="multilingual_cleaners",
     use_phonemes=True,
     phoneme_language="bg",
@@ -77,6 +82,9 @@ config = VitsConfig(
     datasets=dataset_config,
     test_sentences=[
         ["На едното му ухо имаше малка сребърна обица.", "1", None, "bg"],
+        ["Отворен за ползване - безплатен и достъпен за всички в Интернет.", "1", None, "bg"],
+        ["След като се върнахме от плажа, се изправихме пред нови предизвикателства.", "1", None, "bg"],
+        ["Той беше много доволен от резултата.", "1", None, "bg"]
     ],
 )
 

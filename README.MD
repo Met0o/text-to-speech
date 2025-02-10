@@ -18,9 +18,9 @@ To avoid the need to resample the audio files after they are generated and align
 
 Alternative text-to-speech cloud services such as OpenAI's `tts-1`, `tts-1-hd` models, and [Google TTS](https://cloud.google.com/text-to-speech/docs/voices), struggle to produce natural-sounding Bulgarian voice. Their output is choppy, robotic, and generally unpleasant to listen to. Many words are mispronounced, and the intonation is off.
 
-With this dataset, the total number of synthesized characters through Azure's API was `1.08 million` with approximate cost of `€15`. I used Azure's Free Trial tier with a starting credit of `€190.00`. After generating audio multiple times throughout my experiments, the total number of synthesized characters reached `7.79 million`, resulting in a total API usage cost of `€109.41`.
+With this dataset, the total number of synthesized characters through Azure's API was `1.08 million` with approximate cost of `€15`. I used Azure's Free Trial tier with a starting credit of `€190.00`.
 
-There is also an option to use Azure's Free (F0) tier, which allows for synthesizing `0.5 million` characters free per month, or the Pay-as-You-Go tier, which costs `€14.40` per `1 million` characters.
+If Free Trial isn't available, there is an option to use Azure's Free (F0) tier, which allows for synthesizing `0.5 million` characters free per month, or the Pay-as-You-Go tier, which costs `€14.40` per `1 million` characters.
 
 ## Project setup
 
@@ -166,13 +166,13 @@ CUDA_VISIBLE_DEVICES=0 python GlowTTS.py
 - Continue a previous run
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python GlowTTS.py --continue_path train_dir/run-February-04-2025_02+52PM-8b5b6b9
+CUDA_VISIBLE_DEVICES=0 python VITS.py --continue_path train_dir/vits_vctk-February-09-2025_11+40AM-5956d67
 ```
 
 - Fine-tune a model
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python GlowTTS.py --restore_path train_dir/run-February-02-2025_11+19PM-0000000/checkpoint.pth
+CUDA_VISIBLE_DEVICES=0 python VITS.py --restore_path train_dir/vits_vctk-February-09-2025_11+40AM-5956d67/checkpoint_750000.pth
 
 CUDA_VISIBLE_DEVICES="0" python VITS.py \
     --config_path  tts_models--bg--cv--vits/config.json \
