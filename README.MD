@@ -1,13 +1,21 @@
+# Bulgarian Text-to-Speech (TTS) Model
+
 ## Project Description
 
-This project is designed to establish a pipeline for data gathering, data processing, and model training for text-to-speech synthesis.
+This project establishes a pipeline for data gathering, processing, and model training for text-to-speech (TTS) synthesis.
 
-The main goal is to create a Bulgarian TTS model based on the [GlowTTS](https://coqui-tts.readthedocs.io/en/latest/models/glow_tts.html) architecture. 
+### Goal
+The primary objective is to develop a Bulgarian TTS model. Initially, I extensively tested the Coqui-TTS implementation based on the [GlowTTS](https://coqui-tts.readthedocs.io/en/latest/models/glow_tts.html) architecture. However, the results were unsatisfactory. The baseline model I trained and fine-tuned may not have been well-suited for the task, as the synthesized speech sounded robotic and unnatural. That model had 28 million parameters and a size of approximately 300MB.
 
-Data gathering compiles a large corpus of Bulgarian text which is obtained through the open-source website [chitanka](https://chitanka.info/text/random.html). 
+After about a week of training and testing the `GlowTTS`, I came across a very basic [VITS](https://aimodels.org/ai-models/text-to-speech-synthesis/bulgarian-female-tts-model-vits-encoding-trained-on-cv-dataset-at-22050hz/) [model](https://coqui-tts.readthedocs.io/en/latest/models/vits.html) trained on the open-source Bulgarian Voice dataset. While the synthesized speech was initially harsh and unnatural, the model provided a solid foundation for further training, as it was a multilingual model that had already been trained on Bulgarian speech.
 
-Data processing involves cleaning, formatting, and extracting sentences, creating a unified corpus of `20510` sentences with a corresponding metadata file. Strict filtering is applied to remove too long or too short sentences, non-Bulgarian characters, formatting artifacts, and other unwanted text. Total audio duration is `24.80` hours.
+### Data Gathering
+The dataset consists of a large corpus of Bulgarian text, primarily sourced from the open-source website [Chitanka](https://chitanka.info/). To further expand the model's vocabulary, I searched for an open-source Bulgarian dictionary with a large word corpus. This led me to [dic.vanyog.com](https://vanyog.com/index.php?pid=84). By cross-referencing the Chitanka dataset with the dictionary's SQL database, I extracted words that were missing from my corpus.
 
+### Data processing 
+The data processing pipeline involves cleaning, formatting, and extracting sentences to create a unified corpus of `20510` sentences with a corresponding metadata file. Strict filtering is applied to remove too long or too short sentences, non-Bulgarian characters, formatting artifacts, and other unwanted text. Total audio duration is `24.80` hours.
+
+### Challenges
 Since obtaining a large dataset of high-quality Bulgarian audio files is very difficult (if not impossible, excluding copyright data), the audio files are synthesized using the Azure Text-to-Speech API with `bg-BG-KalinaNeural` set as the voice. I found this synthetic voice to be the most natural-sounding for Bulgarian speech that currently exists.
 
 To avoid the need to resample the audio files after they are generated and align their spec with the model's architecture, the Azure API is configured to return the audio files in `22050kHz 16bit PCM mono` format. This is done by setting the output format in the speech config object:

@@ -55,7 +55,7 @@ def generate_sentence_for_sample(sample_index, max_retries=5):
         try:
             acquire_rate_limit()
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4o-mini",
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=100
             )
@@ -92,7 +92,7 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
 
 results.sort(key=lambda x: x[0])
 
-with open("data/sample_generated_sentences.txt", "w", encoding="utf-8") as out_file:
+with open("data/sample_generated_sentences_4o-mini.txt", "w", encoding="utf-8") as out_file:
     for _, _, sentence in results:
         out_file.write(sentence + "\n")
 
