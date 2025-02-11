@@ -11,7 +11,7 @@ def extract_words_from_sql_file(sql_path, chunk_size=1024*1024):  # 1MB chunks
     dictionary_words = set()
     results = []
     with open(sql_path, 'r', encoding='utf-8') as sql_file:
-        with Pool(processes=24) as pool:  # Adjust based on your CPU cores
+        with Pool(processes=24) as pool:  # Available CPU cores
             while True:
                 chunk = sql_file.read(chunk_size)
                 if not chunk:
@@ -30,7 +30,6 @@ def normalize_and_extract_words(corpus_path, chunk_size=1024*1024):  # 1MB chunk
             chunk = corpus_file.read(chunk_size)
             if not chunk:
                 break
-            # Lowercase and extract words
             words = re.findall(r'\b\w+\b', chunk.lower())
             corpus_words.update(words)
     return corpus_words

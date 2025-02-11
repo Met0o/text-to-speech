@@ -1,11 +1,11 @@
+import re
 import os
 import time
 import random
-import concurrent.futures
-import re
 import threading
-from collections import deque
+import concurrent.futures
 from openai import OpenAI
+from collections import deque
 from dotenv import load_dotenv
 
 load_dotenv('configs/.env')

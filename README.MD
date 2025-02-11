@@ -160,7 +160,7 @@ done
 - Start training from scratch
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python GlowTTS.py
+CUDA_VISIBLE_DEVICES=0 python VITS.py
 ```
 
 - Continue a previous run
