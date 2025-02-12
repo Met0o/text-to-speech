@@ -174,7 +174,7 @@ CUDA_VISIBLE_DEVICES=0 python VITS.py
 - Continue a previous run
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python VITS.py --continue_path train_dir/vits_vctk-February-09-2025_11+40AM-5956d67
+CUDA_VISIBLE_DEVICES=0 python VITS.py --continue_path train_dir/vits_vctk-February-10-2025_06+26PM-0e7bb00
 ```
 
 - Fine-tune a model

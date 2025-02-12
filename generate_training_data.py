@@ -26,7 +26,7 @@ MAX_CONCURRENT_REQUESTS = 64 # Azure TTS limit is 200 transactions per second (T
 # --------------------
 # File and Folder Setup
 # --------------------
-input_file = os.path.join("data", "sentences.txt")
+input_file = os.path.join("data", "cleaned_sample_generated_sentences_4o-mini.txt")
 try:
     with open(input_file, "r", encoding="utf-8") as file:
         sentences = [line.strip() for line in file if line.strip()]
@@ -34,7 +34,7 @@ except FileNotFoundError:
     print(f"Error: Could not find {input_file}")
     exit(1)
 
-output_folder = "output_audio"
+output_folder = "output_audio_finetune"
 os.makedirs(output_folder, exist_ok=True)
 metadata_file = os.path.join(output_folder, "metadata.csv")
 
