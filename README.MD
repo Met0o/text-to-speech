@@ -7,13 +7,13 @@ This project establishes a pipeline for data gathering, processing, and model tr
 ### Goal
 The primary objective is to develop a Bulgarian TTS model. Initially, I extensively tested the Coqui-TTS implementation based on the [GlowTTS](https://coqui-tts.readthedocs.io/en/latest/models/glow_tts.html) architecture. However, the results were unsatisfactory. The baseline model I trained and fine-tuned may not have been well-suited for the task, as the synthesized speech sounded robotic and unnatural. That model had 28 million parameters and a size of approximately 300MB.
 
-After about a week of training and testing the `GlowTTS`, I came across a very basic [VITS](https://aimodels.org/ai-models/text-to-speech-synthesis/bulgarian-female-tts-model-vits-encoding-trained-on-cv-dataset-at-22050hz/) [model](https://coqui-tts.readthedocs.io/en/latest/models/vits.html) trained on the open-source Bulgarian Voice dataset. While the synthesized speech was initially harsh and unnatural, the model provided a solid foundation for further training, as it was a multilingual model that had already been trained on Bulgarian speech.
+After about a week of training and testing the `GlowTTS`, I came across a very basic [VITS](https://aimodels.org/ai-models/text-to-speech-synthesis/bulgarian-female-tts-model-vits-encoding-trained-on-cv-dataset-at-22050hz/) [model](https://coqui-tts.readthedocs.io/en/latest/models/vits.html) trained on the open-source Bulgarian Voice dataset. While the synthesized speech was initially harsh and unnatural, the model provided a solid foundation for further training, as it was a multilingual model that had already been trained on Bulgarian speech. That model has 89.5 million parameters and a size of approximately 1GB.
 
 ### Data Gathering
-The dataset consists of a large corpus of Bulgarian text, primarily sourced from the open-source website [Chitanka](https://chitanka.info/). To further expand the model's vocabulary, I searched for an open-source Bulgarian dictionary with a large word corpus. This led me to [dic.vanyog.com](https://vanyog.com/index.php?pid=84). By cross-referencing the Chitanka dataset with the dictionary's SQL database, I extracted words that were missing from my corpus and using OpenAI's API, I generated an additional corpus of `10000` sentences. This dataset I used for finetuning.
+The dataset consists of a large corpus of Bulgarian text, primarily sourced from the open-source website [Chitanka](https://chitanka.info/). To further expand the model's vocabulary, I searched for an open-source Bulgarian dictionary with a large word corpus. This led me to [dic.vanyog.com](https://vanyog.com/index.php?pid=84). By cross-referencing the Chitanka dataset with the dictionary's SQL database, I extracted words that were missing from my corpus and using OpenAI's API, I generated an additional corpus of `~8000` sentences. This dataset I used for finetuning.
 
 ### Data processing 
-The data processing pipeline involves cleaning, formatting, and extracting sentences to create a unified corpus of `20510` sentences with a corresponding metadata file. Strict filtering is applied to remove too long or too short sentences, non-Bulgarian characters, formatting artifacts, and other unwanted text. Total audio duration is `24.80` hours.
+The data processing pipeline involves cleaning, formatting, and extracting sentences to create a unified corpus of `20510` (for training) and `~8000` (for finetuning) sentences with a corresponding metadata file. Strict filtering is applied to remove too long or too short sentences, non-Bulgarian characters, formatting artifacts, and other unwanted text. Total audio duration for the training sample is `24.80` hours. and `19.80` hours for the finetuning sample.
 
 ### Challenges
 Since obtaining a large dataset of high-quality Bulgarian audio files is very difficult (if not impossible, excluding copyright data), the audio files are synthesized using the Azure Text-to-Speech API with `bg-BG-KalinaNeural` set as the voice. I found this synthetic voice to be the most natural-sounding for Bulgarian speech that currently exists.
@@ -180,7 +180,7 @@ CUDA_VISIBLE_DEVICES=0 python VITS.py --continue_path train_dir/vits_vctk-Februa
 - Fine-tune a model
 
 ```bash
-CUDA_VISIBLE_DEVICES=0 python VITS.py --restore_path train_dir/vits_vctk-February-09-2025_11+40AM-5956d67/checkpoint_750000.pth
+CUDA_VISIBLE_DEVICES=0 python VITS.py --restore_path train_dir/vits_vctk-February-10-2025_06+26PM-0e7bb00/checkpoint_1220000.pth
 
 CUDA_VISIBLE_DEVICES="0" python VITS.py \
     --config_path  tts_models--bg--cv--vits/config.json \

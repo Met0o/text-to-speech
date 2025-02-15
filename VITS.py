@@ -16,11 +16,6 @@ output_path = "train_dir"
 if not os.path.exists(output_path):
     os.makedirs(output_path)
 
-# dataset_paths = [
-#     path for path in glob(os.path.join(output_path, "*"))
-#     if os.path.basename(path) != "phoneme_cache"
-# ]
-
 dataset_paths = [
     path for path in glob(os.path.join(output_path, "*"))
     if os.path.basename(path) != "phoneme_cache" and os.path.exists(os.path.join(path, "metadata.csv"))
@@ -29,9 +24,11 @@ dataset_paths = [
 dataset_config = [
     BaseDatasetConfig(
         formatter="ljspeech",
+        # formatter="custom_bulgarian_formatter",
         meta_file_train="metadata.csv",
         path=path,
-        language=os.path.basename(path),
+        # language=os.path.basename(path),
+        language="bg"
     )
     for path in dataset_paths
 ]
@@ -65,7 +62,7 @@ config = VitsConfig(
     precompute_num_workers=12,
     run_eval=True,
     test_delay_epochs=-1,
-    epochs=400,
+    epochs=100,
     text_cleaner="multilingual_cleaners",
     use_phonemes=True,
     phoneme_language="bg",
