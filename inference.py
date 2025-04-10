@@ -9,7 +9,7 @@ if ckpts and configs:
     model_path = "train_dir/vits_vctk-February-10-2025_06+26PM-0e7bb00/checkpoint_1220000.pth"
     config_path = "train_dir/vits_vctk-February-10-2025_06+26PM-0e7bb00/config.json"
 
-    cmd = f'''tts --text "Един тежък крак зашари за ключа, достигна го и светлината заля всичко. Eднообразната светлина на прозаичното изкуствено слънце." \
+    cmd = f'''tts --text "Аз съм невронна мрежа, обучена с гласа на Калина." \
         --model_path "{model_path}" \
         --config_path "{config_path}" \
         --speaker_id 1 \

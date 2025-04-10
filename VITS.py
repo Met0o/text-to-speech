@@ -23,11 +23,11 @@ dataset_paths = [
 
 dataset_config = [
     BaseDatasetConfig(
-        formatter="ljspeech",
-        # formatter="custom_bulgarian_formatter",
+        #formatter="ljspeech",
+        formatter="custom_bulgarian_formatter",
         meta_file_train="metadata.csv",
         path=path,
-        # language=os.path.basename(path),
+        language=os.path.basename(path),
         language="bg"
     )
     for path in dataset_paths
