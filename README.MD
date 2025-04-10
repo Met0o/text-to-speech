@@ -4,6 +4,10 @@
 
 This project establishes a pipeline for data gathering, processing, and model training for text-to-speech (TTS) synthesis.
 
+## Model 
+
+[Listen to the audio sample](out.wav)
+
 ### Goal
 The primary objective is to develop a Bulgarian TTS model. Initially, I extensively tested the Coqui-TTS implementation based on the [GlowTTS](https://coqui-tts.readthedocs.io/en/latest/models/glow_tts.html) architecture. However, the results were unsatisfactory. The baseline model I trained and fine-tuned may not have been well-suited for the task, as the synthesized speech sounded robotic and unnatural. That model had 28 million parameters and a size of approximately 300MB.
 
